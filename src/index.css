@@ -20,6 +20,18 @@
 
 @layer base {
   body {
+    font-family: var(--font-family-display);
     @apply antialiased;
+  }
+
+  .font-mono {
+    font-family: var(--font-family-mono);
+  }
+
+  .material-icon {
+    display: inline-flex;
+    font-family: 'Material Symbols Outlined';
+    font-size: inherit;
+    line-height: 1;
   }
 }
