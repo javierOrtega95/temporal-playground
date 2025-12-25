@@ -4,9 +4,22 @@ import EditorToolbar from './components/editor-toolbar/EditorToolbar'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import { EXAMPLES } from './examples'
+import { useCopyToClipboard } from './hooks/useCopyToClipboard'
 
 export default function App() {
   const [selectedExample, setSelectedExample] = useState<TemporalExample>(EXAMPLES[0])
+  const [code, setCode] = useState<string>(EXAMPLES[0].code)
+
+  const { copyToClipboard } = useCopyToClipboard()
+
+  const handleExampleChange = (example: TemporalExample) => {
+    setSelectedExample(example)
+    setCode(example.code)
+  }
+
+  const handleCopy = async () => {
+    return await copyToClipboard(code)
+  }
 
   return (
     <div className='flex flex-col min-h-screen bg-gray-50'>
@@ -19,15 +32,15 @@ export default function App() {
             <EditorToolbar
               examples={EXAMPLES}
               selectedExample={selectedExample.id}
-              onExampleChange={(example) => setSelectedExample(example)}
-              onCopy={() => {}}
-              onReset={() => {}}
+              onExampleChange={handleExampleChange}
+              onReset={() => setCode(selectedExample.code)}
+              onCopy={handleCopy}
             />
 
             <EditorPanel
-              code={selectedExample.code}
+              code={code}
               fileName={selectedExample.filename}
-              onChange={() => {}}
+              onChange={(code) => setCode(code)}
             />
           </div>
 

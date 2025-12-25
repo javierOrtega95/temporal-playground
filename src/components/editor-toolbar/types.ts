@@ -5,5 +5,5 @@ export interface EditorToolbarProps {
   selectedExample: TemporalExampleID
   onExampleChange: (example: TemporalExample) => void
   onReset: VoidFunction
-  onCopy: VoidFunction
+  onCopy: () => Promise<boolean>
 }

@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import type { EditorToolbarProps } from './types'
 
 export default function EditorToolbar({
@@ -7,12 +8,39 @@ export default function EditorToolbar({
   onReset,
   onCopy,
 }: EditorToolbarProps) {
+  const [copied, setCopied] = useState(false)
+  const timeoutRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
+
   const handleExampleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = examples.find((example) => example.id === event.target.value)
 
     if (!selected) return
 
     onExampleChange(selected)
+  }
+
+  const handleCopyClick = async () => {
+    const success = await onCopy()
+    if (!success) return
+
+    setCopied(true)
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
+    timeoutRef.current = window.setTimeout(() => {
+      setCopied(false)
+      timeoutRef.current = null
+    }, 1200)
   }
 
   return (
@@ -53,11 +81,11 @@ export default function EditorToolbar({
           </button>
 
           <button
-            onClick={onCopy}
-            title='Copy code'
+            onClick={handleCopyClick}
+            title={copied ? 'Copied!' : 'Copy code'}
             className='flex items-center p-2 text-text-secondary hover:text-primary hover:bg-primary/5 rounded transition-colors'
           >
-            <span className='material-icon text-[20px]'>content_copy</span>
+            <span className='material-icon text-[20px]'>{copied ? 'check' : 'content_copy'}</span>
           </button>
         </div>
       </div>
