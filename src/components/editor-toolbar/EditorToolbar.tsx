@@ -7,6 +7,14 @@ export default function EditorToolbar({
   onReset,
   onCopy,
 }: EditorToolbarProps) {
+  const handleExampleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = examples.find((example) => example.id === event.target.value)
+
+    if (!selected) return
+
+    onExampleChange(selected)
+  }
+
   return (
     <div className='flex items-center gap-3 flex-shrink-0'>
       <div className='flex items-center justify-between bg-surface-light p-2 rounded-lg border border-[#e7ebf3] shadow-sm flex-1'>
@@ -16,10 +24,10 @@ export default function EditorToolbar({
 
           <div className='relative flex items-center flex-1'>
             <select
+              className='appearance-none bg-transparent border-none pr-8 text-sm font-medium text-text-main focus:outline-none cursor-pointer w-full'
               value={selectedExample}
               aria-label='Select Temporal example'
-              onChange={(e) => onExampleChange(e.target.value)}
-              className='appearance-none bg-transparent border-none pr-8 text-sm font-medium text-text-main focus:outline-none cursor-pointer w-full'
+              onChange={handleExampleChange}
             >
               {examples.map((example) => (
                 <option key={example.id} value={example.id}>

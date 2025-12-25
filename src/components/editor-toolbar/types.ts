@@ -1,9 +1,9 @@
 export type ExampleOption = Pick<TemporalExample, 'id' | 'label'>
 
 export interface EditorToolbarProps {
-  examples: ExampleOption[]
+  examples: TemporalExample[]
   selectedExample: TemporalExampleID
-  onExampleChange: (id: TemporalExampleID) => void
+  onExampleChange: (example: TemporalExample) => void
   onReset: VoidFunction
   onCopy: VoidFunction
 }
