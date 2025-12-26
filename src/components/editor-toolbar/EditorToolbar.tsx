@@ -48,10 +48,11 @@ export default function EditorToolbar({
       <div className='flex items-center justify-between bg-surface-light p-2 rounded-lg border border-[#e7ebf3] shadow-sm flex-1'>
         {/* Left: Example selector */}
         <div className='flex items-center flex-1 gap-2'>
-          <span className='material-icon text-text-secondary ml-2 text-[20px]'>code_blocks</span>
+          <span className='material-icon text-text-secondary ml-2 text-[18px]'>code</span>
 
           <div className='relative flex items-center flex-1'>
             <select
+              id='example-selector'
               className='appearance-none bg-transparent border-none pr-8 text-sm font-medium text-text-main focus:outline-none cursor-pointer w-full'
               value={selectedExample}
               aria-label='Select Temporal example'
