@@ -7,8 +7,9 @@ import { EXAMPLES } from './examples'
 import useCopyToClipboard from './hooks/useCopyToClipboard'
 
 export default function App() {
-  const [selectedExample, setSelectedExample] = useState<TemporalExample>(EXAMPLES[0])
-  const [code, setCode] = useState<string>(EXAMPLES[0].code)
+  const [initialExample] = EXAMPLES
+  const [selectedExample, setSelectedExample] = useState<TemporalExample>(initialExample)
+  const [code, setCode] = useState<string>(initialExample.code)
 
   const { copyToClipboard } = useCopyToClipboard()
 
