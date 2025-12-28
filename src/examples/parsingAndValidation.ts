@@ -28,8 +28,7 @@ try {
   zonedResult = error instanceof Error ? error.message : String(error);
 }
 
-// Result: last expression
-({
+console.log({
   invalidInput: invalidDateString,
   temporalPlainDate: temporalResult,
   legacyDate: legacyDate.toString(),

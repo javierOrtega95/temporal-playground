@@ -21,8 +21,7 @@ const plus24Hours = start.add({ hours: 24 });
 const legacyStart = new Date('2024-03-09T12:00:00-05:00');
 const legacyPlus24h = new Date(legacyStart.getTime() + 24 * 60 * 60 * 1000);
 
-// Result: last expression
-({
+console.log({
   start: start.toString(),
   addDays: plusOneDay.toString(),
   addHours: plus24Hours.toString(),

@@ -21,8 +21,7 @@ const endZoned = now.toZonedDateTimeISO(timeZone);
 const legacyNow = new Date();
 const legacyStart = new Date(legacyNow.getTime() - 60 * 60 * 1000);
 
-// Result: last expression
-({
+console.log({
   duration: duration.toString(),
   intervalUTC: {
     start: start.toString(),

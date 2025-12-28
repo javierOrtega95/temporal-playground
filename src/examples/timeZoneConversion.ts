@@ -13,8 +13,7 @@ const tokyoTime = instant.toZonedDateTimeISO('Asia/Tokyo');
 // --- Legacy Date comparison (problematic) ---
 const legacyDate = new Date(instant.epochMilliseconds);
 
-// Result: last expression
-({
+console.log({
   instant: instant.toString(),
   newYork: nyTime.toString(),
   tokyo: tokyoTime.toString(),
