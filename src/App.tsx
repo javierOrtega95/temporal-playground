@@ -3,9 +3,9 @@ import EditorPanel from './components/editor-panel/EditorPanel'
 import EditorToolbar from './components/editor-toolbar/EditorToolbar'
 import Footer from './components/Footer'
 import Header from './components/Header'
+import OutputPanel from './components/output-panel/OutputPanel'
 import { EXAMPLES } from './examples'
 import useCopyToClipboard from './hooks/useCopyToClipboard'
-import OutputPanel from './components/output-panel/OutputPanel'
 
 export default function App() {
   const [initialExample] = EXAMPLES
@@ -20,7 +20,7 @@ export default function App() {
   }
 
   return (
-    <div className='flex flex-col min-h-screen bg-gray-50'>
+    <div className='flex flex-col h-screen bg-gray-50'>
       <Header />
 
       <main className='flex flex-col flex-1 min-h-0 max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6'>
@@ -41,7 +41,7 @@ export default function App() {
             />
           </section>
 
-          <section className='lg:col-span-5 flex flex-col gap-4 h-full'>
+          <section className='lg:col-span-5 flex flex-col min-h-0'>
             <OutputPanel result={null} />
           </section>
         </div>
