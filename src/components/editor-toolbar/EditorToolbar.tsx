@@ -46,7 +46,6 @@ export default function EditorToolbar({
   return (
     <div className='flex items-center gap-3 flex-shrink-0'>
       <div className='flex items-center justify-between bg-surface-light p-2 rounded-lg border border-[#e7ebf3] shadow-sm flex-1'>
-        {/* Left: Example selector */}
         <div className='flex items-center flex-1 gap-2'>
           <span className='material-icon text-text-secondary ml-2 text-[18px]'>code</span>
 
@@ -71,7 +70,6 @@ export default function EditorToolbar({
           </div>
         </div>
 
-        {/* Right: actions */}
         <div className='border-l border-gray-200 pl-2 ml-2 flex gap-1'>
           <button
             onClick={onReset}
