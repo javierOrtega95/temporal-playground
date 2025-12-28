@@ -1,5 +1,4 @@
 import type { FunctionComponent } from 'react'
-import type { OutputPanelProps, OutputValue } from '../types'
 
 const VALUE_RENDERERS: Record<string, FunctionComponent<{ value: unknown }>> = {
   string: ({ value }) => <span className='text-emerald-600'>"{value as string}"</span>,
@@ -18,6 +17,10 @@ const VALUE_RENDERERS: Record<string, FunctionComponent<{ value: unknown }>> = {
 const FallbackRenderer: FunctionComponent<{ value: unknown }> = ({ value }) => (
   <span className='text-text-main'>{String(value)}</span>
 )
+
+interface OutputPanelProps {
+  result: ExecutionResult | null
+}
 
 export default function OutputPanelContent({ result }: OutputPanelProps) {
   if (!result || result.messages.length === 0) {

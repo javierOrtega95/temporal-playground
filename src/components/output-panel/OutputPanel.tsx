@@ -1,6 +1,9 @@
 import OutputPanelContent from './components/OutputPanelContent'
 import OutputPanelHeader from './components/OutputPanelHeader'
-import type { OutputPanelProps } from './types'
+
+interface OutputPanelProps {
+  result: ExecutionResult | null
+}
 
 export default function OutputPanel({ result }: OutputPanelProps) {
   return (

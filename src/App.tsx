@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import EditorPanel from './components/editor-panel/EditorPanel'
 import EditorToolbar from './components/editor-toolbar/EditorToolbar'
 import Footer from './components/Footer'
@@ -7,12 +7,49 @@ import OutputPanel from './components/output-panel/OutputPanel'
 import { EXAMPLES } from './examples'
 import useCopyToClipboard from './hooks/useCopyToClipboard'
 
+const EXECUTION_DEBOUNCE_MS = 400
+
 export default function App() {
   const [initialExample] = EXAMPLES
+
   const [selectedExample, setSelectedExample] = useState<TemporalExample>(initialExample)
   const [code, setCode] = useState<string>(initialExample.code)
+  const [executionResult, setExecutionResult] = useState<ExecutionResult | null>(null)
+
+  const workerRef = useRef<Worker | null>(null)
 
   const { copyToClipboard } = useCopyToClipboard()
+
+  useEffect(() => {
+    const WorkerURL = new URL('./workers/execution.worker.ts', import.meta.url)
+    const worker = new Worker(WorkerURL, { type: 'module' })
+
+    worker.onmessage = (event) => {
+      if (event.data.type !== 'result') return
+
+      setExecutionResult(event.data.result)
+    }
+
+    workerRef.current = worker
+
+    return () => {
+      worker.terminate()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!workerRef.current) return
+
+    const timeoutId = setTimeout(() => {
+      if (!workerRef.current) return
+
+      workerRef.current.postMessage({ type: 'execute', code })
+    }, EXECUTION_DEBOUNCE_MS)
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [code])
 
   const handleExampleChange = (example: TemporalExample) => {
     setSelectedExample(example)
@@ -31,7 +68,7 @@ export default function App() {
               selectedExample={selectedExample.id}
               onExampleChange={handleExampleChange}
               onReset={() => setCode(selectedExample.code)}
-              onCopy={async () => await copyToClipboard(code)}
+              onCopy={() => copyToClipboard(code)}
             />
 
             <EditorPanel
@@ -42,7 +79,7 @@ export default function App() {
           </section>
 
           <section className='lg:col-span-5 flex flex-col min-h-0'>
-            <OutputPanel result={null} />
+            <OutputPanel result={executionResult} />
           </section>
         </div>
       </main>
