@@ -50,10 +50,10 @@ export default function EditorToolbar({
           <div className='flex items-center flex-1 gap-2'>
             <span className='material-icon text-text-secondary ml-2 text-[18px]'>code</span>
 
-            <div className='relative flex items-center flex-1'>
+            <div className='relative flex items-center flex-1 rounded-md px-2 py-1 hover:bg-gray-50 focus-within:ring-1 focus-within:ring-primary cursor-pointer transition-colors duration-150'>
               <select
                 id='example-selector'
-                className='appearance-none bg-transparent border-none pr-8 text-sm font-medium text-text-main focus:outline-none cursor-pointer w-full'
+                className='appearance-none bg-transparent border-none py-1 pr-8 text-sm font-medium text-text-main focus:outline-none cursor-pointer w-full'
                 value={selectedExample.id}
                 aria-label='Select Temporal example'
                 onChange={handleExampleChange}
@@ -91,7 +91,7 @@ export default function EditorToolbar({
         </div>
 
         {selectedExample.description && (
-          <p className='ml-8 text-xs text-text-secondary leading-snug'>
+          <p className='ml-10 text-xs text-text-secondary leading-snug'>
             {selectedExample.description}
           </p>
         )}
