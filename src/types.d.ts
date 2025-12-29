@@ -25,3 +25,5 @@ type OutputMessage = {
 type MessageType = 'log' | 'warn' | 'error' | 'info' | 'debug'
 
 type OutputValue = { kind: 'label'; value: string } | { kind: 'value'; value: unknown }
+
+type WorkerResponse = { type: 'result'; result: ExecutionResult }

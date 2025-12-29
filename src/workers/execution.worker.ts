@@ -7,7 +7,7 @@ self.onmessage = (event) => {
   const { type, code } = event.data
   if (type !== 'execute') return
 
-  const messages = []
+  const messages: OutputMessage[] = []
   const start = performance.now()
 
   const originalConsole = {
@@ -18,18 +18,15 @@ self.onmessage = (event) => {
     debug: console.debug,
   }
 
-  const capture =
-    (level: MessageType) =>
-    (...args: unknown[]) => {
+  const capture = (level: MessageType) => {
+    return (...args: unknown[]) => {
       messages.push({
         id: crypto.randomUUID(),
         type: level,
-        parts: args.map((arg) => ({
-          kind: 'value',
-          value: arg,
-        })),
+        parts: args.map((arg) => ({ kind: 'value', value: arg })),
       })
     }
+  }
 
   console.log = capture('log')
   console.warn = capture('warn')
@@ -37,44 +34,85 @@ self.onmessage = (event) => {
   console.info = capture('info')
   console.debug = capture('debug')
 
+  let fn
+
+  try {
+    // Check for syntax errors
+    fn = new Function(code)
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    const errorValue: unknown | string = { name: 'Syntax Error', message: errorMessage }
+
+    const messages: OutputMessage[] = [
+      {
+        id: crypto.randomUUID(),
+        type: 'error',
+        parts: [
+          {
+            kind: 'value',
+            value: errorValue,
+          },
+        ],
+      },
+    ]
+
+    const response: WorkerResponse = {
+      type: 'result',
+      result: {
+        hasError: true,
+        messages,
+      },
+    }
+
+    self.postMessage(response)
+
+    return
+  }
+
   let hasError = false
 
   try {
-    const fn = new Function(code)
+    // Execute the code
     const result = fn()
 
     if (result !== undefined) {
-      messages.push({
+      const message: OutputMessage = {
         id: crypto.randomUUID(),
         type: 'log',
         parts: [{ kind: 'value', value: result }],
-      })
+      }
+
+      messages.push(message)
     }
   } catch (error) {
     hasError = true
-    messages.push({
+
+    const errorValue: unknown | string =
+      error instanceof Error ? { name: error.name, message: error.message } : String(error)
+
+    const message: OutputMessage = {
       id: crypto.randomUUID(),
       type: 'error',
       parts: [
         {
           kind: 'value',
-          value:
-            error instanceof Error ? { name: error.name, message: error.message } : String(error),
+          value: errorValue,
         },
       ],
-    })
+    }
+
+    messages.push(message)
   } finally {
-    console.log = originalConsole.log
-    console.warn = originalConsole.warn
-    console.error = originalConsole.error
+    Object.assign(console, originalConsole)
   }
 
-  self.postMessage({
-    type: 'result',
-    result: {
-      durationMs: performance.now() - start,
-      hasError,
-      messages,
-    },
-  })
+  const result: ExecutionResult = {
+    durationMs: performance.now() - start,
+    hasError,
+    messages,
+  }
+
+  const response: WorkerResponse = { type: 'result', result }
+
+  self.postMessage(response)
 }

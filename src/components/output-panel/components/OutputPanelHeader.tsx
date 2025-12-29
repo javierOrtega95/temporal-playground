@@ -14,14 +14,15 @@ export default function OutputPanelHeader({ result, status }: OutputPanelProps) 
             <span
               className={`material-icon ${result?.hasError ? 'text-red-600' : 'text-green-600'}`}
             >
-              {result?.hasError ? 'error' : 'check_circle'}
+              {result?.hasError ? 'cancel' : 'check_circle'}
             </span>
-            Execution Output
+
+            {result?.hasError ? 'Execution error' : 'Execution output'}
           </>
         )}
       </h2>
 
-      {result?.durationMs != null && (
+      {status !== 'running' && result?.durationMs != null && (
         <span className='text-xs font-mono text-text-secondary bg-gray-100 px-2 py-1 rounded'>
           {result.durationMs.toFixed(1)} ms
         </span>

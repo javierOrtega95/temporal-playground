@@ -8,6 +8,7 @@ import { EXAMPLES } from './examples'
 import useCopyToClipboard from './hooks/useCopyToClipboard'
 
 const EXECUTION_DEBOUNCE_MS = 400
+const EXECUTION_TIMEOUT_MS = 10000
 
 export default function App() {
   const [initialExample] = EXAMPLES
@@ -18,21 +19,32 @@ export default function App() {
   const [executionResult, setExecutionResult] = useState<ExecutionResult | null>(null)
   const [executionStatus, setExecutionStatus] = useState<ExecutionStatus>('idle')
 
+  const executionTimeoutRef = useRef<number | null>(null)
   const workerRef = useRef<Worker | null>(null)
 
   const { copyToClipboard } = useCopyToClipboard()
 
-  useEffect(() => {
+  function createWorker() {
     const WorkerURL = new URL('./workers/execution.worker.ts', import.meta.url)
     const worker = new Worker(WorkerURL, { type: 'module' })
 
     worker.onmessage = (event) => {
       if (event.data.type !== 'result') return
 
+      if (executionTimeoutRef.current) {
+        clearTimeout(executionTimeoutRef.current)
+        executionTimeoutRef.current = null
+      }
+
       setExecutionResult(event.data.result)
       setExecutionStatus('idle')
     }
 
+    return worker
+  }
+
+  useEffect(() => {
+    const worker = createWorker()
     workerRef.current = worker
 
     return () => {
@@ -43,16 +55,59 @@ export default function App() {
   useEffect(() => {
     if (!workerRef.current) return
 
-    const timeoutId = setTimeout(() => {
+    const debounceId = window.setTimeout(() => {
       if (!workerRef.current) return
 
       setExecutionStatus('running')
 
+      if (executionTimeoutRef.current) {
+        clearTimeout(executionTimeoutRef.current)
+        executionTimeoutRef.current = null
+      }
+
       workerRef.current.postMessage({ type: 'execute', code })
+
+      executionTimeoutRef.current = window.setTimeout(() => {
+        // worker timeout
+        workerRef.current?.terminate()
+
+        const messages: OutputMessage[] = [
+          {
+            id: crypto.randomUUID(),
+            type: 'error',
+            parts: [
+              {
+                kind: 'value',
+                value: {
+                  name: 'TimeoutError',
+                  message: 'Execution took too long and was terminated',
+                },
+              },
+            ],
+          },
+        ]
+
+        const result: ExecutionResult = {
+          hasError: true,
+          messages,
+        }
+
+        setExecutionResult(result)
+        setExecutionStatus('idle')
+
+        // recreate worker
+        const newWorker = createWorker()
+        workerRef.current = newWorker
+      }, EXECUTION_TIMEOUT_MS)
     }, EXECUTION_DEBOUNCE_MS)
 
     return () => {
-      clearTimeout(timeoutId)
+      clearTimeout(debounceId)
+
+      if (executionTimeoutRef.current) {
+        clearTimeout(executionTimeoutRef.current)
+        executionTimeoutRef.current = null
+      }
     }
   }, [code])
 
