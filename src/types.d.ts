@@ -8,6 +8,8 @@ type TemporalExample = {
   code: string
 }
 
+type ExecutionStatus = 'idle' | 'running'
+
 type ExecutionResult = {
   durationMs?: number
   messages: OutputMessage[]

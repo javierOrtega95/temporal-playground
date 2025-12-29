@@ -14,7 +14,9 @@ export default function App() {
 
   const [selectedExample, setSelectedExample] = useState<TemporalExample>(initialExample)
   const [code, setCode] = useState<string>(initialExample.code)
+
   const [executionResult, setExecutionResult] = useState<ExecutionResult | null>(null)
+  const [executionStatus, setExecutionStatus] = useState<ExecutionStatus>('idle')
 
   const workerRef = useRef<Worker | null>(null)
 
@@ -28,6 +30,7 @@ export default function App() {
       if (event.data.type !== 'result') return
 
       setExecutionResult(event.data.result)
+      setExecutionStatus('idle')
     }
 
     workerRef.current = worker
@@ -42,6 +45,8 @@ export default function App() {
 
     const timeoutId = setTimeout(() => {
       if (!workerRef.current) return
+
+      setExecutionStatus('running')
 
       workerRef.current.postMessage({ type: 'execute', code })
     }, EXECUTION_DEBOUNCE_MS)
@@ -79,7 +84,7 @@ export default function App() {
           </section>
 
           <section className='lg:col-span-5 flex flex-col min-h-0'>
-            <OutputPanel result={executionResult} />
+            <OutputPanel result={executionResult} status={executionStatus} />
           </section>
         </div>
       </main>
