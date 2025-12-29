@@ -34,9 +34,9 @@ export default function OutputPanelContent({ result }: OutputPanelProps) {
   }
 
   return (
-    <>
+    <ul className='space-y-2'>
       {result.messages.map((msg) => (
-        <div key={msg.id} className='flex items-start gap-2'>
+        <li key={msg.id} className='flex items-start gap-2'>
           <span className='select-none text-blue-600'>›</span>
 
           <div className='flex flex-wrap gap-1 flex-1'>
@@ -44,9 +44,9 @@ export default function OutputPanelContent({ result }: OutputPanelProps) {
               <OutputMessagePart key={index} part={part} />
             ))}
           </div>
-        </div>
+        </li>
       ))}
-    </>
+    </ul>
   )
 }
 
