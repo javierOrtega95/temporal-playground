@@ -1,3 +1,8 @@
+declare module 'temporal-types-raw' {
+  const content: string
+  export default content
+}
+
 type TemporalExampleID = string
 
 type TemporalExample = {
