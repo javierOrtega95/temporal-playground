@@ -1,6 +1,6 @@
 import Editor from '@monaco-editor/react'
 import { EDITOR_OPTIONS } from './editorOptions'
-import { setupMonacoFonts, setupTemporalLanguage } from './setupTemporalMonaco'
+import { setupMonacoFonts, setupTemporalPolyfill } from './setupTemporalMonaco'
 import type { EditorPanelProps } from './types'
 
 export default function EditorPanel({ code, fileName, onChange }: EditorPanelProps) {
@@ -16,7 +16,7 @@ export default function EditorPanel({ code, fileName, onChange }: EditorPanelPro
       </header>
 
       <Editor
-        beforeMount={setupTemporalLanguage}
+        beforeMount={setupTemporalPolyfill}
         onMount={setupMonacoFonts}
         value={code}
         language='typescript'

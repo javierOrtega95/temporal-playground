@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
+import ExampleSelector from '../example-selector/ExampleSelector'
 import type { EditorToolbarProps } from './types'
 
+const COPY_FEEDBACK_DURATION = 1200
+
 export default function EditorToolbar({
-  examples,
   selectedExample,
   onExampleChange,
   onReset,
@@ -19,14 +21,6 @@ export default function EditorToolbar({
     }
   }, [])
 
-  const handleExampleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selected = examples.find((example) => example.id === event.target.value)
-
-    if (!selected) return
-
-    onExampleChange(selected)
-  }
-
   const handleCopyClick = async () => {
     const success = await onCopy()
     if (!success) return
@@ -40,36 +34,14 @@ export default function EditorToolbar({
     timeoutRef.current = window.setTimeout(() => {
       setCopied(false)
       timeoutRef.current = null
-    }, 1200)
+    }, COPY_FEEDBACK_DURATION)
   }
 
   return (
     <div className='flex items-center gap-3 flex-shrink-0'>
       <div className='flex flex-col gap-1 bg-surface-light p-2 rounded-lg border border-[#e7ebf3] shadow-sm flex-1'>
         <div className='flex items-center justify-between'>
-          <div className='flex items-center flex-1 gap-2'>
-            <span className='material-icon text-text-secondary ml-2 text-[18px]'>code</span>
-
-            <div className='relative flex items-center flex-1 rounded-md px-2 py-1 hover:bg-gray-50 focus-within:ring-1 focus-within:ring-primary cursor-pointer transition-colors duration-150'>
-              <select
-                id='example-selector'
-                className='appearance-none bg-transparent border-none py-1 pr-8 text-sm font-medium text-text-main focus:outline-none cursor-pointer w-full'
-                value={selectedExample.id}
-                aria-label='Select Temporal example'
-                onChange={handleExampleChange}
-              >
-                {examples.map((example) => (
-                  <option key={example.id} value={example.id}>
-                    Example: {example.label}
-                  </option>
-                ))}
-              </select>
-
-              <span className='material-icon pointer-events-none absolute right-2 text-[18px] text-text-secondary'>
-                expand_more
-              </span>
-            </div>
-          </div>
+          <ExampleSelector selectedExample={selectedExample} onExampleChange={onExampleChange} />
 
           <div className='border-l border-gray-200 pl-2 ml-2 flex gap-1'>
             <button
@@ -91,9 +63,11 @@ export default function EditorToolbar({
         </div>
 
         {selectedExample.description && (
-          <p className='ml-10 text-xs text-text-secondary leading-snug'>
-            {selectedExample.description}
-          </p>
+          <div className='mt-1 bg-primary/5 rounded px-2 py-1.5 border-l-2 border-primary/30'>
+            <p className='text-xs text-text-secondary leading-relaxed'>
+              {selectedExample.description}
+            </p>
+          </div>
         )}
       </div>
     </div>
