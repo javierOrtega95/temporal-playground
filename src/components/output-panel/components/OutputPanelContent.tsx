@@ -30,7 +30,12 @@ interface OutputPanelProps {
 
 export default function OutputPanelContent({ result }: OutputPanelProps) {
   if (!result || result.messages.length === 0) {
-    return <div className='text-text-secondary italic'>No output yet</div>
+    return (
+      <div className='flex items-center gap-2 text-text-secondary'>
+        <span className='material-icon text-[18px]'>terminal</span>
+        <span className='italic'>Run code to see output</span>
+      </div>
+    )
   }
 
   return (
