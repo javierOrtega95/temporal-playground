@@ -1,16 +1,22 @@
 import type { FunctionComponent } from 'react'
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return Object.prototype.toString.call(value) === '[object Object]'
+}
+
 const VALUE_RENDERERS: Record<string, FunctionComponent<{ value: unknown }>> = {
   string: ({ value }) => <span className='text-emerald-600'>"{value as string}"</span>,
   number: ({ value }) => <span className='text-blue-600'>{value as number}</span>,
   boolean: ({ value }) => <span className='text-orange-600'>{String(value)}</span>,
   undefined: () => <span className='text-gray-400'>undefined</span>,
   object: ({ value }) => {
-    if (value === null) {
-      return <span className='text-gray-400'>null</span>
+    if (value === null) return <span>null</span>
+
+    if (isPlainObject(value)) {
+      return <ObjectPreview value={value} />
     }
 
-    return <ObjectPreview value={value as Record<string, unknown>} />
+    return <span className='text-purple-600'>{String(value)}</span>
   },
 }
 
@@ -50,14 +56,13 @@ function OutputMessagePart({ part: { kind, value } }: { part: OutputValue }) {
   }
 
   const valueType = typeof value
-  const isObject = valueType === 'object' && value !== null
 
   const ValuePart = VALUE_RENDERERS[valueType] ?? FallbackRenderer
 
-  if (isObject) {
+  if (isPlainObject(value)) {
     return (
       <div className='w-full pl-2'>
-        <ObjectPreview value={value as Record<string, unknown>} />
+        <ObjectPreview value={value} />
       </div>
     )
   }
