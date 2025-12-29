@@ -2,7 +2,7 @@ export const timeZoneConversion: TemporalExample = {
   id: 'time-zone-conversion',
   label: 'Time Zone Conversion',
   filename: 'timeZoneConversion.ts',
-  description: 'Convert a UTC instant to a user time zone in a DST-safe way',
+  description: 'Convert a UTC instant to a user time zone in a DST-safe way.',
   code: `// A fixed point in time (UTC)
 const instant = Temporal.Now.instant();
 

@@ -2,7 +2,7 @@ export const addVsAddDST: TemporalExample = {
   id: 'add-vs-add-dst',
   label: 'Add vs Add (DST Safe)',
   filename: 'addVsAddDST.ts',
-  description: 'Adding 1 day is not the same as adding 24 hours when DST is involved',
+  description: 'Adding 1 day is not the same as adding 24 hours when DST is involved.',
   code: `// Pick a date close to a DST change (US example)
 const timeZone = 'America/New_York';
 

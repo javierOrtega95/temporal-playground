@@ -65,7 +65,7 @@ export default function App() {
           <section className='lg:col-span-7 flex flex-col gap-4 min-h-0'>
             <EditorToolbar
               examples={EXAMPLES}
-              selectedExample={selectedExample.id}
+              selectedExample={selectedExample}
               onExampleChange={handleExampleChange}
               onReset={() => setCode(selectedExample.code)}
               onCopy={() => copyToClipboard(code)}

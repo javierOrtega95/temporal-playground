@@ -2,7 +2,7 @@ export const isoDurations: TemporalExample = {
   id: 'iso-durations',
   label: 'ISO Durations / Relative Time Ranges',
   filename: 'isoDurations.ts',
-  description: 'Calculate relative time ranges using ISO durations (PT1H, P7D, etc.)',
+  description: 'Calculate relative time ranges using ISO durations (PT1H, P7D, etc.).',
   code: `// Relative duration (e.g. "last 1 hour")
 const duration = Temporal.Duration.from('PT1H');
 

@@ -4,7 +4,7 @@ type TemporalExample = {
   id: TemporalExampleID
   label: string
   filename: string
-  description: string
+  description?: string
   code: string
 }
 

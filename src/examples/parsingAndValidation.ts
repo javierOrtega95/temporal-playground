@@ -2,7 +2,7 @@ export const parsingAndValidation: TemporalExample = {
   id: 'parsing-validation',
   label: 'Parsing & Validation',
   filename: 'parsingAndValidation.ts',
-  description: 'Temporal validates input strictly, unlike Date',
+  description: 'Temporal validates input strictly, unlike Date.',
   code: `// Invalid calendar date
 const invalidDateString = '2024-02-30';
 
