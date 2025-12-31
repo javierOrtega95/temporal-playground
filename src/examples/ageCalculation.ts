@@ -36,7 +36,7 @@ const uptimeHours = uptime.total({ unit: 'hour' });
 // --- Legacy Date (problematic) ---
 const legacyBirth = new Date('1990-03-15');
 const legacyToday = new Date();
-const legacyAgeMs = legacyToday - legacyBirth;
+const legacyAgeMs = legacyToday.getTime() - legacyBirth.getTime();
 const legacyAgeYears = legacyAgeMs / (1000 * 60 * 60 * 24 * 365.25);
 
 console.log({
