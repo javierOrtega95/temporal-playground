@@ -1,14 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import EditorPanel from './components/editor-panel/EditorPanel'
 import EditorToolbar from './components/editor-toolbar/EditorToolbar'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import OutputPanel from './components/output-panel/OutputPanel'
 import { EXAMPLES } from './examples'
-import useCopyToClipboard from './hooks/useCopyToClipboard'
-
-const EXECUTION_DEBOUNCE_MS = 400
-const EXECUTION_TIMEOUT_MS = 10000
+import { useCodeExecution } from './hooks/use-code-execution/useCodeExecution'
+import { useCopyToClipboard } from './hooks/useCopyToClipboard'
 
 export default function App() {
   const [initialExample] = EXAMPLES
@@ -16,100 +14,9 @@ export default function App() {
   const [selectedExample, setSelectedExample] = useState<TemporalExample>(initialExample)
   const [code, setCode] = useState<string>(initialExample.code)
 
-  const [executionResult, setExecutionResult] = useState<ExecutionResult | null>(null)
-  const [executionStatus, setExecutionStatus] = useState<ExecutionStatus>('idle')
-
-  const executionTimeoutRef = useRef<number | null>(null)
-  const workerRef = useRef<Worker | null>(null)
+  const { executionResult, executionStatus } = useCodeExecution({ code })
 
   const { copyToClipboard } = useCopyToClipboard()
-
-  function createWorker() {
-    const WorkerURL = new URL('./workers/execution.worker.ts', import.meta.url)
-    const worker = new Worker(WorkerURL, { type: 'module' })
-
-    worker.onmessage = (event) => {
-      if (event.data.type !== 'result') return
-
-      if (executionTimeoutRef.current) {
-        clearTimeout(executionTimeoutRef.current)
-        executionTimeoutRef.current = null
-      }
-
-      setExecutionResult(event.data.result)
-      setExecutionStatus('idle')
-    }
-
-    return worker
-  }
-
-  useEffect(() => {
-    const worker = createWorker()
-    workerRef.current = worker
-
-    return () => {
-      worker.terminate()
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!workerRef.current) return
-
-    const debounceId = window.setTimeout(() => {
-      if (!workerRef.current) return
-
-      setExecutionStatus('running')
-
-      if (executionTimeoutRef.current) {
-        clearTimeout(executionTimeoutRef.current)
-        executionTimeoutRef.current = null
-      }
-
-      workerRef.current.postMessage({ type: 'execute', code })
-
-      executionTimeoutRef.current = window.setTimeout(() => {
-        // worker timeout
-        workerRef.current?.terminate()
-
-        const messages: OutputMessage[] = [
-          {
-            id: crypto.randomUUID(),
-            type: 'error',
-            parts: [
-              {
-                kind: 'value',
-                value: {
-                  name: 'TimeoutError',
-                  message: 'Execution took too long and was terminated',
-                },
-              },
-            ],
-          },
-        ]
-
-        const result: ExecutionResult = {
-          hasError: true,
-          messages,
-        }
-
-        setExecutionResult(result)
-        setExecutionStatus('idle')
-
-        // recreate worker
-        const newWorker = createWorker()
-        workerRef.current = newWorker
-      }, EXECUTION_TIMEOUT_MS)
-    }, EXECUTION_DEBOUNCE_MS)
-
-    return () => {
-      clearTimeout(debounceId)
-
-      if (executionTimeoutRef.current) {
-        clearTimeout(executionTimeoutRef.current)
-        executionTimeoutRef.current = null
-      }
-    }
-  }, [code])
 
   const handleExampleChange = (example: TemporalExample) => {
     setSelectedExample(example)
@@ -130,11 +37,7 @@ export default function App() {
               onCopy={() => copyToClipboard(code)}
             />
 
-            <EditorPanel
-              code={code}
-              fileName={selectedExample.filename}
-              onChange={(code) => setCode(code)}
-            />
+            <EditorPanel code={code} fileName={selectedExample.filename} onChange={setCode} />
           </section>
 
           <section className='lg:col-span-5 flex flex-col min-h-0'>

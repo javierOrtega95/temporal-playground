@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
-import useCopyToClipboard from '../../../hooks/useCopyToClipboard'
+import { useEffect, useRef, useState } from 'react'
+import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard'
 import type { OutputPanelProps } from '../types'
 
 export default function OutputPanelHeader({ result, status }: OutputPanelProps) {

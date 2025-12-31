@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 type CopiedValue = string | null
 type CopyFn = (text: string) => Promise<boolean>
 
-export default function useCopyToClipboard(): {
+export function useCopyToClipboard(): {
   copiedText: CopiedValue
   copyToClipboard: CopyFn
   reset: VoidFunction
