@@ -28,17 +28,13 @@ No setup required — runs entirely in your browser.
 
 ## What you'll learn
 
-### Fundamentals
-Understanding Temporal types • Timezone conversion • Parsing & validation • Migration from Date
+**Fundamentals** • Understanding Temporal types • Timezone conversion • Parsing & validation • Migration from Date
 
-### Common Operations  
-ISO durations • Date differences • Comparison & sorting • API serialization • Formatting
+**Common Operations** • ISO durations • Date differences • Comparison & sorting • API serialization • Formatting
 
-### Advanced Concepts
-Calendar vs absolute arithmetic • DST handling • Immutability benefits
+**Advanced Concepts** • Calendar vs absolute arithmetic • DST handling • Immutability benefits
 
-### Real-World Use Cases
-Recurring events • Age calculation • Dashboard time windows
+**Real-World Use Cases** • Recurring events • Age calculation • Dashboard time windows
 
 ## Contributing
 
@@ -61,7 +57,6 @@ Contributions welcome! Ideas for improvements:
 
 **Built with ❤️ to help developers adopt Temporal**
 
-[⭐ Star this repo](https://github.com/javierOrtega95/temporal-playground) if you found it helpful
+[Give it a star ⭐](https://github.com/javierOrtega95/temporal-playground) • [Report an issue](https://github.com/javierOrtega95/temporal-playground/issues) • [Request a feature](https://github.com/javierOrtega95/temporal-playground/issues/new)
 
 </div>
-```
