@@ -1,7 +1,15 @@
+// ============================================
+// Vite Modules
+// ============================================
+
 declare module 'temporal-types-raw' {
   const content: string
   export default content
 }
+
+// ============================================
+// Examples Domain
+// ============================================
 
 type TemporalExampleID = string
 
@@ -12,6 +20,10 @@ type TemporalExample = {
   description?: string
   code: string
 }
+
+// ============================================
+// Code Execution Domain
+// ============================================
 
 type ExecutionStatus = 'idle' | 'running'
 
