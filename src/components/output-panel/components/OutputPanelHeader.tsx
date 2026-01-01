@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard'
 import type { OutputPanelProps } from '../types'
 
-export default function OutputPanelHeader({ result, status }: OutputPanelProps) {
+export function OutputPanelHeader({ result, status }: OutputPanelProps) {
   const [copied, setCopied] = useState(false)
   const timeoutRef = useRef<number | null>(null)
 
