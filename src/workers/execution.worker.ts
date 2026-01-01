@@ -1,4 +1,5 @@
 import { Temporal } from '@js-temporal/polyfill'
+import { generateId } from '../utils/uuid'
 
 type Self = Window & typeof globalThis & { Temporal: typeof Temporal }
 ;(self as Self).Temporal = Temporal
@@ -21,7 +22,7 @@ self.onmessage = (event) => {
   const capture = (level: MessageType) => {
     return (...args: unknown[]) => {
       messages.push({
-        id: crypto.randomUUID(),
+        id: generateId(),
         type: level,
         parts: args.map((arg) => ({ kind: 'value', value: arg })),
       })
@@ -45,7 +46,7 @@ self.onmessage = (event) => {
 
     const messages: OutputMessage[] = [
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         type: 'error',
         parts: [
           {
@@ -77,7 +78,7 @@ self.onmessage = (event) => {
 
     if (result !== undefined) {
       const message: OutputMessage = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         type: 'log',
         parts: [{ kind: 'value', value: result }],
       }
@@ -91,7 +92,7 @@ self.onmessage = (event) => {
       error instanceof Error ? { name: error.name, message: error.message } : String(error)
 
     const message: OutputMessage = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       type: 'error',
       parts: [
         {

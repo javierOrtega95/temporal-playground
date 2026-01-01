@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { UseCodeExecutionParams, UseCodeExecutionReturn } from './types'
 import { createExecutionWorker } from './helpers'
+import { generateId } from '../../utils/uuid'
 
 const EXECUTION_DEBOUNCE_MS = 400
 const EXECUTION_TIMEOUT_MS = 10000
@@ -64,7 +65,7 @@ export function useCodeExecution({
 
         const messages: OutputMessage[] = [
           {
-            id: crypto.randomUUID(),
+            id: generateId(),
             type: 'error',
             parts: [
               {
