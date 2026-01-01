@@ -45,8 +45,6 @@ export function useCodeExecution({
   }, [setupWorker])
 
   useEffect(() => {
-    if (!workerRef.current) return
-
     const debounceId = window.setTimeout(() => {
       if (!workerRef.current) return
 
