@@ -1,5 +1,5 @@
-export function createExecutionWorker(): Worker {
-  const WorkerURL = new URL('../../workers/execution.worker.ts', import.meta.url)
+import ExecutionWorkerUrl from '../../workers/execution.worker.ts?worker&url'
 
-  return new Worker(WorkerURL, { type: 'module' })
+export function createExecutionWorker(): Worker {
+  return new Worker(ExecutionWorkerUrl, { type: 'module' })
 }
