@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <header className='bg-surface-light border-b border-gray-200 sticky top-0 z-50 flex-shrink-0'>
+    <header className='bg-surface-light dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 flex-shrink-0'>
       <div className='max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex items-center justify-between py-3'>
           <div className='flex items-center gap-3'>
@@ -9,18 +9,18 @@ export default function Header() {
             </div>
 
             <div>
-              <h1 className='text-lg font-bold tracking-tight text-slate-900'>
+              <h1 className='text-lg font-bold tracking-tight text-slate-900 dark:text-white'>
                 Temporal Playground
               </h1>
 
-              <p className='text-xs text-text-secondary hidden sm:block'>
+              <p className='text-xs text-text-secondary dark:text-gray-400 hidden sm:block'>
                 Experiment with the JavaScript Temporal API through real code execution.
               </p>
             </div>
           </div>
 
           <a
-            className='flex items-center gap-2 text-text-secondary hover:text-slate-900 transition-colors'
+            className='flex items-center gap-2 text-text-secondary dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors'
             href='https://github.com/javierOrtega95/temporal-playground'
             target='_blank'
           >

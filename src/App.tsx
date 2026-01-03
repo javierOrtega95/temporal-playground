@@ -24,7 +24,7 @@ export default function App() {
   }
 
   return (
-    <div className='flex flex-col min-h-screen lg:h-screen bg-gray-50'>
+    <div className='flex flex-col min-h-screen lg:h-screen bg-gray-50 dark:bg-gray-900'>
       <Header />
 
       <main className='flex flex-col flex-1 max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 lg:min-h-0'>
