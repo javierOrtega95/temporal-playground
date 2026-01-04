@@ -8,7 +8,7 @@ export function ObjectPreview({ value }: ObjectPreviewProps) {
   const entries = Object.entries(value)
 
   return (
-    <div className='rounded px-2 py-1 text-xs font-mono'>
+    <div className='rounded px-2 py-1 text-xs font-mono text-gray-900 dark:text-gray-100'>
       {'{'}
 
       <div className='pl-3 space-y-1'>
@@ -17,7 +17,7 @@ export function ObjectPreview({ value }: ObjectPreviewProps) {
 
           return (
             <div key={key}>
-              <span className='text-gray-600'>{key}</span>
+              <span className='text-gray-600 dark:text-gray-400'>{key}</span>
               {': '}
               <ValuePart value={val} />
             </div>

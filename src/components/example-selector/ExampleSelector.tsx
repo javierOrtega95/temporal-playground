@@ -24,22 +24,29 @@ export default function ExampleSelector({
     <div ref={dropdownRef} className='relative flex-1'>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='w-full flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-50 transition-colors'
+        className='w-full flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'
       >
-        <span className='material-icon text-text-secondary text-[18px]'>code</span>
-        <span className='text-sm font-medium flex-1 text-left'>{selectedExample.label}</span>
-        <span className='material-icon text-text-secondary text-[18px]'>
+        <span className='material-icon text-text-secondary dark:text-gray-400 text-[18px]'>
+          code
+        </span>
+
+        <span className='text-sm font-medium flex-1 text-left text-gray-900 dark:text-white'>
+          {selectedExample.label}
+        </span>
+
+        <span className='material-icon text-text-secondary dark:text-gray-400 text-[18px]'>
           {isOpen ? 'expand_less' : 'expand_more'}
         </span>
       </button>
 
       {isOpen && (
-        <div className='absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto'>
+        <div className='absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto'>
           {Object.entries(EXAMPLES_GROUPED).map(([key, group]) => (
             <div key={key} className='py-2'>
-              <div className='px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wide'>
+              <div className='px-3 py-1 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide'>
                 {group.label}
               </div>
+
               {group.examples.map((example) => (
                 <button
                   key={example.id}
@@ -47,15 +54,18 @@ export default function ExampleSelector({
                     onExampleChange(example)
                     setIsOpen(false)
                   }}
-                  className={`w-full text-left px-3 py-2 hover:bg-primary/5 transition-colors ${
+                  className={`w-full text-left px-3 py-2 hover:bg-primary/5 dark:hover:bg-blue-500/10 transition-colors ${
                     selectedExample.id === example.id
-                      ? 'bg-primary/10 text-primary font-medium'
-                      : ''
+                      ? 'bg-primary/10 dark:bg-blue-500/20 text-primary dark:text-blue-400 font-medium'
+                      : 'text-gray-900 dark:text-gray-200'
                   }`}
                 >
                   <div className='text-sm'>{example.label}</div>
+
                   {example.description && (
-                    <div className='text-xs text-gray-500 mt-0.5'>{example.description}</div>
+                    <div className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>
+                      {example.description}
+                    </div>
                   )}
                 </button>
               ))}

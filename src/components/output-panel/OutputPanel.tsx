@@ -8,7 +8,7 @@ export default function OutputPanel({ result, status }: OutputPanelProps) {
     <div className='flex flex-col flex-1 min-h-0 gap-4'>
       <OutputPanelHeader result={result} status={status} />
 
-      <div className='flex-1 min-h-0 bg-white rounded-xl border border-gray-200 shadow-sm'>
+      <div className='flex-1 min-h-0 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm'>
         <div className='h-full overflow-y-auto p-4 font-mono text-sm space-y-2'>
           {result?.hasError ? (
             <ErrorBlock message={result.messages[0]} />

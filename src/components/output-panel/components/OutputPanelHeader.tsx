@@ -52,18 +52,24 @@ export function OutputPanelHeader({ result, status }: OutputPanelProps) {
     }, 1200)
   }
   return (
-    <header className='flex items-center justify-between pb-2 border-b border-gray-200 flex-shrink-0'>
+    <header className='flex items-center justify-between pb-2 border-b border-gray-200 dark:border-gray-700 flex-shrink-0'>
       <div className='flex items-center gap-2'>
-        <h2 className='text-lg font-bold text-text-main flex items-center gap-2'>
+        <h2 className='text-lg font-bold text-text-main dark:text-white flex items-center gap-2'>
           {status === 'running' ? (
             <>
-              <span className='animate-spin material-icon text-blue-600'>autorenew</span>
+              <span className='animate-spin material-icon text-blue-600 dark:text-blue-400'>
+                autorenew
+              </span>
               Running…
             </>
           ) : (
             <>
               <span
-                className={`material-icon ${result?.hasError ? 'text-red-600' : 'text-green-600'}`}
+                className={`material-icon ${
+                  result?.hasError
+                    ? 'text-red-600 dark:text-red-400'
+                    : 'text-green-600 dark:text-green-400'
+                }`}
               >
                 {result?.hasError ? 'cancel' : 'check_circle'}
               </span>
@@ -77,14 +83,14 @@ export function OutputPanelHeader({ result, status }: OutputPanelProps) {
           onClick={handleCopy}
           disabled={!hasOutput || status === 'running'}
           title={copied ? 'Copied!' : 'Copy output'}
-          className='flex items-center p-2 text-text-secondary hover:text-primary hover:bg-primary/5 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-text-secondary'
+          className='flex items-center p-2 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-text-secondary dark:disabled:hover:text-gray-400'
         >
           <span className='material-icon text-[20px]'>{copied ? 'check' : 'content_copy'}</span>
         </button>
       </div>
 
       {status !== 'running' && result?.durationMs != null && (
-        <span className='text-xs font-mono text-text-secondary bg-gray-100 px-2 py-1 rounded'>
+        <span className='text-xs font-mono text-text-secondary dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded'>
           {result.durationMs.toFixed(1)} ms
         </span>
       )}

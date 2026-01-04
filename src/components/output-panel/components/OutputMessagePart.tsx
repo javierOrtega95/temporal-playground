@@ -10,7 +10,7 @@ export function OutputMessagePart({ part }: OutputMessagePartProps) {
   const { kind, value } = part
 
   if (kind === 'label') {
-    return <span className='text-gray-600 mr-1'>{value}</span>
+    return <span className='text-gray-600 dark:text-gray-400 mr-1'>{value}</span>
   }
 
   const valueType = typeof value
