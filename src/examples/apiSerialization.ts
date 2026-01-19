@@ -3,21 +3,22 @@ export const apiSerialization: TemporalExample = {
   label: 'API Serialization',
   filename: 'apiSerialization.ts',
   description: 'Send and receive Temporal objects in API requests and JSON.',
-  code: `// Temporal objects don't auto-serialize to JSON
-// You must explicitly convert them to strings
+  code: `// Temporal objects auto-serialize via toJSON() - but you may want explicit control for APIs
 
 const meetingTime = Temporal.ZonedDateTime.from('2024-03-15T14:30:00[America/New_York]');
 const now = Temporal.Now.instant();
 
-// ❌ WRONG: This doesn't work
-const wrongJson = JSON.stringify({ meetingTime, now });
-// Result: '{"meetingTime":{},"now":{}}' - loses all data!
+// ✅ Automatic serialization works (JSON.stringify calls toJSON() internally)
+const autoJson = JSON.stringify({ meetingTime, now });
+// Result: '{"meetingTime":"2024-03-15T14:30:00-04:00[America/New_York]","now":"2024-03-15T18:30:00Z"}'
+console.log('Auto-serialization:', autoJson);
 
-// ✅ CORRECT: Convert to ISO strings first
+// ✅ BEST PRACTICE: Explicit conversion for API design
+// You control the exact format for your API contract
 const apiPayload = {
   eventTime: meetingTime.toString(),  // ISO 8601 with timezone
   timestamp: now.toString(),          // ISO 8601 UTC
-  epochMs: now.epochMilliseconds,     // Unix timestamp (for compatibility)
+  epochMs: now.epochMilliseconds,     // Unix timestamp (for legacy compatibility)
   structured: {
     date: meetingTime.toPlainDate().toString(),
     time: meetingTime.toPlainTime().toString(),
@@ -25,16 +26,16 @@ const apiPayload = {
   }
 };
 
-const correctJson = JSON.stringify(apiPayload);
+const explicitJson = JSON.stringify(apiPayload);
 
 // Deserialize from API response
-const apiResponse = JSON.parse(correctJson);
+const apiResponse = JSON.parse(explicitJson);
 
 const eventFromApi = Temporal.ZonedDateTime.from(apiResponse.eventTime);
 const timestampFromApi = Temporal.Instant.from(apiResponse.timestamp);
 const epochFromApi = Temporal.Instant.fromEpochMilliseconds(apiResponse.epochMs);
 
-// Reconstruct from parts
+// Reconstruct from structured parts
 const reconstructed = Temporal.ZonedDateTime.from({
   year: 2024,
   month: 3,
@@ -51,8 +52,14 @@ const legacyParsed = JSON.parse(legacyJson);
 const legacyRestored = new Date(legacyParsed.date);
 
 console.log({ 
-  wrong: wrongJson,
-  correct: correctJson,
+  autoSerialization: {
+    raw: autoJson,
+    note: 'toJSON() works automatically, but format is fixed'
+  },
+  explicitSerialization: {
+    raw: explicitJson,
+    note: 'You control the format for your API contract'
+  },
   original: {
     meetingTime: meetingTime.toString(),
     now: now.toString(),
@@ -69,6 +76,5 @@ console.log({
     restored: legacyRestored.toISOString(),
     warning: 'Date auto-serializes but always loses timezone (converts to UTC)',
   }
-});
-`,
+});`,
 }
