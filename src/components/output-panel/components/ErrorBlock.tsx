@@ -1,3 +1,5 @@
+import { AlertCircle } from 'lucide-react'
+
 interface ErrorBlockProps {
   message: OutputMessage
 }
@@ -10,7 +12,8 @@ export function ErrorBlock({ message }: ErrorBlockProps) {
   return (
     <div className='rounded-lg border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/50 p-4 font-mono text-sm'>
       <div className='flex items-center gap-2 text-red-700 dark:text-red-400 font-semibold mb-2'>
-        <span className='material-icon'>error</span>
+        <AlertCircle size={16} />
+
         {error?.name ?? 'Execution Error'}
       </div>
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Check, CheckCircle, Copy, RefreshCw, XCircle } from 'lucide-react'
 import { useCopyToClipboard } from '../../../hooks/useCopyToClipboard'
 import type { OutputPanelProps } from '../types'
 
@@ -51,28 +52,23 @@ export function OutputPanelHeader({ result, status }: OutputPanelProps) {
       timeoutRef.current = null
     }, 1200)
   }
+
   return (
     <header className='flex items-center justify-between pb-2 border-b border-gray-200 dark:border-gray-700 flex-shrink-0'>
       <div className='flex items-center gap-2'>
         <h2 className='text-lg font-bold text-text-main dark:text-white flex items-center gap-2'>
           {status === 'running' ? (
             <>
-              <span className='animate-spin material-icon text-blue-600 dark:text-blue-400'>
-                autorenew
-              </span>
+              <RefreshCw size={20} className='animate-spin text-blue-600 dark:text-blue-400' />
               Running…
             </>
           ) : (
             <>
-              <span
-                className={`material-icon ${
-                  result?.hasError
-                    ? 'text-red-600 dark:text-red-400'
-                    : 'text-green-600 dark:text-green-400'
-                }`}
-              >
-                {result?.hasError ? 'cancel' : 'check_circle'}
-              </span>
+              {result?.hasError ? (
+                <XCircle size={20} className='text-red-600 dark:text-red-400' />
+              ) : (
+                <CheckCircle size={20} className='text-green-600 dark:text-green-400' />
+              )}
 
               {result?.hasError ? 'Execution error' : 'Execution output'}
             </>
@@ -85,7 +81,7 @@ export function OutputPanelHeader({ result, status }: OutputPanelProps) {
           title={copied ? 'Copied!' : 'Copy output'}
           className='flex items-center p-2 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-text-secondary dark:disabled:hover:text-gray-400'
         >
-          <span className='material-icon text-[20px]'>{copied ? 'check' : 'content_copy'}</span>
+          {copied ? <Check size={20} /> : <Copy size={20} />}
         </button>
       </div>
 

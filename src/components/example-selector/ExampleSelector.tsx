@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { ChevronDown, ChevronUp, Code } from 'lucide-react'
 import { EXAMPLES_GROUPED } from '../../examples'
 import type { ExampleSelectorProps } from './types'
 
@@ -26,17 +27,17 @@ export default function ExampleSelector({
         onClick={() => setIsOpen(!isOpen)}
         className='w-full flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'
       >
-        <span className='material-icon text-text-secondary dark:text-gray-400 text-[18px]'>
-          code
-        </span>
+        <Code size={18} className='text-text-secondary dark:text-gray-400 shrink-0' />
 
         <span className='text-sm font-medium flex-1 text-left text-gray-900 dark:text-white'>
           {selectedExample.label}
         </span>
 
-        <span className='material-icon text-text-secondary dark:text-gray-400 text-[18px]'>
-          {isOpen ? 'expand_less' : 'expand_more'}
-        </span>
+        {isOpen ? (
+          <ChevronUp size={18} className='text-text-secondary dark:text-gray-400 shrink-0' />
+        ) : (
+          <ChevronDown size={18} className='text-text-secondary dark:text-gray-400 shrink-0' />
+        )}
       </button>
 
       {isOpen && (
