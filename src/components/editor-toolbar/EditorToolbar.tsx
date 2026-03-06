@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Check, Copy, RotateCcw } from 'lucide-react'
 import ExampleSelector from '../example-selector/ExampleSelector'
 import type { EditorToolbarProps } from './types'
 
@@ -49,7 +50,7 @@ export default function EditorToolbar({
               title='Reset code'
               className='flex items-center p-2 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10 rounded transition-colors'
             >
-              <span className='material-icon text-[20px]'>restart_alt</span>
+              <RotateCcw size={20} />
             </button>
 
             <button
@@ -57,7 +58,7 @@ export default function EditorToolbar({
               title={copied ? 'Copied!' : 'Copy code'}
               className='flex items-center p-2 text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-blue-400 hover:bg-primary/5 dark:hover:bg-blue-500/10 rounded transition-colors'
             >
-              <span className='material-icon text-[20px]'>{copied ? 'check' : 'content_copy'}</span>
+              {copied ? <Check size={20} /> : <Copy size={20} />}
             </button>
           </div>
         </div>
